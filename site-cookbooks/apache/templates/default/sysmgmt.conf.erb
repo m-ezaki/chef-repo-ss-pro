@@ -1,0 +1,11 @@
+<Location /sysmgmt>
+ order deny,allow
+ deny from all
+ allow from 127.0.0.1
+ allow from 172.24.24.0/23
+ allow from 10.5.2.0/23
+#MC master
+ allow from 61.121.217.66
+#MC backup
+ allow from 124.35.81.13
+</Location>

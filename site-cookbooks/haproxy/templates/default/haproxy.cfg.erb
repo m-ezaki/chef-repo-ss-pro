@@ -1,0 +1,67 @@
+#---------------------------------------------------------------------
+# Global settings
+#---------------------------------------------------------------------
+global
+    # to have these messages end up in /var/log/haproxy.log you will
+    # need to:
+    #
+    # 1) configure syslog to accept network log events.  This is done
+    #    by adding the '-r' option to the SYSLOGD_OPTIONS in
+    #    /etc/sysconfig/syslog
+    #
+    # 2) configure local2 events to go to the /var/log/haproxy.log
+    #   file. A line like the following can be added to
+    #   /etc/sysconfig/syslog
+    #
+    #    local2.*                       /var/log/haproxy.log
+    #
+    log         127.0.0.1 local2 notice alert
+
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    maxconn     10000
+    user        haproxy
+    group       haproxy
+    daemon
+
+    # turn on stats unix socket
+    stats socket /var/lib/haproxy/stats
+
+#---------------------------------------------------------------------
+# common defaults that all the 'listen' and 'backend' sections will
+# use if not designated in their block
+#---------------------------------------------------------------------
+defaults
+    mode                    tcp
+    log                     global
+    option                  redispatch
+    retries                 3
+    timeout connect         20s
+    timeout client          86400s
+    timeout server          86400s
+
+
+
+#---------------------------------------------------------------------
+listen mysql-master-db
+    bind 127.0.0.1:3306
+    mode tcp
+    option socket-stats
+#    option mysql-check user haproxy
+    option log-health-checks
+    balance roundrobin
+    ##server master 192.168.XX.XX:3306 check port 3306 inter 5000 fall 3 rise 3 weight 5
+    ##server slave1 192.168.YY.YY:3306 check port 3306 inter 5000 fall 3 rise 3 backup
+#---------------------------------------------------------------------
+listen mysql-slave-db
+    bind 127.0.0.2:3306
+    mode tcp
+    option socket-stats
+#    option mysql-check user haproxy
+    option log-health-checks
+    balance roundrobin
+    ##server slave1 192.168.XX.XX:3306 check port 3306 inter 5000 fall 3 rise 3 weight 5
+    ##server master 192.168.YY.YY:3306 check port 3306 inter 5000 fall 3 rise 3 backup
+#---------------------------------------------------------------------
+
+

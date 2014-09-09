@@ -1,0 +1,40 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>DB接続確認</title>
+</head>
+<body>
+
+<?php
+$db_conn_01 = mysql_connect('192.168.XX.XX:3306', 'root', 'fBy1SoeG');
+$db_conn_02 = mysql_connect('127.0.0.1:3306', 'root', 'fBy1SoeG');
+$db_conn_03 = mysql_connect('127.0.0.2:3306', 'root', 'fBy1SoeG');
+
+if (!$db_conn_01) {
+die("VIP:mysql-master:接続失敗<br /> " . mysql_error());
+}
+else {
+echo "VIP:mysql-master:接続成功<br />";
+}
+
+if (!$db_conn_02) {
+die("HAPROXY:mysql-master:接続失敗<br />" . mysql_error());
+}
+else {
+echo "HAPROXY:mysql-master:接続成功<br />";
+}
+
+if (!$db_conn_03) {
+die("HAPROXY:mysql-slave:接続失敗<br />" . mysql_error());
+}
+else {
+echo "HAPROXY:mysql-slave:接続成功\n";
+}
+
+mysql_close($db_conn_01);
+mysql_close($db_conn_02);
+mysql_close($db_conn_03);
+
+?>
+</body>
+</html>

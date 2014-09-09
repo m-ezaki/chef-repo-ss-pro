@@ -1,0 +1,33 @@
+server {
+    listen       80;
+    ##server_name  10.5.XX.XX;
+    server_name  localhost 127.0.0.1;
+    root         /var/www/html;
+    index  index.php index.html;
+ 
+    location ~ \.php$ {
+       charset        utf-8;
+       fastcgi_pass   127.0.0.1:9000;
+       fastcgi_index  index.php;
+       fastcgi_param  SCRIPT_FILENAME  /var/www/html$fastcgi_script_name;
+       include        fastcgi_params;
+    }
+
+    # for zabbix
+    location = /nginx_status {
+        stub_status on;
+        access_log  off;
+        allow       127.0.0.1;
+        allow       10.5.3.52;
+        #allow       10.5/23;
+        deny        all;
+    }
+
+    location /server-status {
+       stub_status on;
+       access_log off;
+       allow 127.0.0.1;
+       allow 10.5.3.52;
+       deny all;
+    }
+}

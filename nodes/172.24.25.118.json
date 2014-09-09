@@ -1,5 +1,18 @@
 {
   "run_list": [
+    "recipe[login_user]",
+    "recipe[yum-ius]",
+    "recipe[yum-idcf]",
+    "recipe[iptables]",
+    "recipe[nginx]",
+    "recipe[apache]",
+    "recipe[haproxy]",
+    "recipe[rsyslog]",
+    "recipe[mysql56u_before_install]",
+    "recipe[mysql56u]",
+    "recipe[php54]",
+    "recipe[mysql56u_after_install]",
+    "recipe[zabbix-agent]",
     "recipe[hello]"
   ],
   "automatic": {

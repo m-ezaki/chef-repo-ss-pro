@@ -1,0 +1,10 @@
+{
+ "id":"normal_user",
+ "uid":"4301",
+ "gid":"4301",
+ "username":"gn25-admin",
+ "group":"gn25-admin",
+ "password":"$1$BYsR/Xek$b49zPjcYgGvWjYbUhNMqo1",
+ "home":"/home/gn25-admin",
+ "shell":"/bin/bash"
+}
