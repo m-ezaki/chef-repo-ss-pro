@@ -1,0 +1,19 @@
+{
+  "name": "web_type01",
+  "default_attributes": { },
+  "override_attributes": { },
+  "json_class": "Chef::Role",
+  "description": "CyberSS:for kinyuu web-sight environment",
+  "chef_type": "role",
+  "run_list": [
+    "recipe[login_user]",
+    "recipe[yum-ius]",
+    "recipe[yum-idcf]",
+    "recipe[iptables]",
+    "recipe[zabbix-agent]",
+    "recipe[apache]",
+    "recipe[haproxy]",
+    "recipe[rsyslog]",
+    "recipe[php54]"
+   ]
+}
