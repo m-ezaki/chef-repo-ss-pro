@@ -6,3 +6,9 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+
+%w{php54-fpm}.each do |pkg|
+ package pkg do
+  action :install
+ end
+end

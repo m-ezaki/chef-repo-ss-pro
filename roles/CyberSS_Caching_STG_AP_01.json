@@ -1,0 +1,21 @@
+{
+  "name": "CyberSS_Caching_STG_AP_01",
+  "default_attributes": { },
+  "override_attributes": { },
+  "json_class": "Chef::Role",
+  "description": "CyberSS_Caching_STG_AP_01",
+  "chef_type": "role",
+  "run_list": [
+    "recipe[login_user]",
+    "recipe[yum-ius]",
+    "recipe[yum-idcf]",
+    "recipe[yum-epel]",
+    "recipe[yum-adtech]",
+    "recipe[iptables]",
+    "recipe[zabbix-agent]",
+    "recipe[apache]",
+    "recipe[haproxy]",
+    "recipe[rsyslog]",
+    "recipe[php54]"
+   ]
+}

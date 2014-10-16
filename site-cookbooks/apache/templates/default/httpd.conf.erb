@@ -85,7 +85,7 @@ LoadModule version_module modules/mod_version.so
 #LoadModule cgid_module modules/mod_cgid.so
 #LoadModule dbd_module modules/mod_dbd.so
 #LoadModule dumpio_module modules/mod_dumpio.so
-#LoadModule filter_module modules/mod_filter.so
+LoadModule filter_module modules/mod_filter.so
 #LoadModule ident_module modules/mod_ident.so
 #LoadModule log_forensic_module modules/mod_log_forensic.so
 #LoadModule unique_id_module modules/mod_unique_id.so
@@ -191,14 +191,11 @@ ScriptAlias /cgi-bin/ "/var/www/cgi-bin/"
 </Directory>
 
 IndexOptions FancyIndexing VersionSort NameWidth=* HTMLTable Charset=UTF-8
-
 AddIconByEncoding (CMP,/icons/compressed.gif) x-compress x-gzip
-
 AddIconByType (TXT,/icons/text.gif) text/*
 AddIconByType (IMG,/icons/image2.gif) image/*
 AddIconByType (SND,/icons/sound2.gif) audio/*
 AddIconByType (VID,/icons/movie.gif) video/*
-
 AddIcon /icons/binary.gif .bin .exe
 AddIcon /icons/binhex.gif .hqx
 AddIcon /icons/tar.gif .tar
@@ -215,12 +212,10 @@ AddIcon /icons/uuencoded.gif .uu
 AddIcon /icons/script.gif .conf .sh .shar .csh .ksh .tcl
 AddIcon /icons/tex.gif .tex
 AddIcon /icons/bomb.gif core
-
 AddIcon /icons/back.gif ..
 AddIcon /icons/hand.right.gif README
 AddIcon /icons/folder.gif ^^DIRECTORY^^
 AddIcon /icons/blank.gif ^^BLANKICON^^
-
 DefaultIcon /icons/unknown.gif
 
 #AddDescription "GZIP compressed document" .gz
@@ -262,27 +257,22 @@ AddLanguage zh-TW .zh-tw
 LanguagePriority en ca cs da de el eo es et fr he hr it ja ko ltz nl nn no pl pt pt-BR ru sv zh-CN zh-TW
 
 ForceLanguagePriority Prefer Fallback
-
 AddDefaultCharset UTF-8
 
 #AddType application/x-tar .tgz
-
 #AddEncoding x-compress .Z
 #AddEncoding x-gzip .gz .tgz
 
 AddType application/x-compress .Z
 AddType application/x-gzip .gz .tgz
-
 AddType application/x-x509-ca-cert .crt
 AddType application/x-pkcs7-crl    .crl
 
 #AddHandler cgi-script .cgi
 #AddHandler send-as-is asis
 AddHandler type-map var
-
 AddType text/html .shtml
 AddOutputFilter INCLUDES .shtml
-
 Alias /error/ "/var/www/error/"
 
 <IfModule mod_negotiation.c>
@@ -315,7 +305,6 @@ Alias /error/ "/var/www/error/"
 #    ErrorDocument 502 /error/HTTP_BAD_GATEWAY.html.var
 #    ErrorDocument 503 /error/HTTP_SERVICE_UNAVAILABLE.html.var
 #    ErrorDocument 506 /error/HTTP_VARIANT_ALSO_VARIES.html.var
-
 </IfModule>
 </IfModule>
 
@@ -324,8 +313,6 @@ BrowserMatch "MSIE 4\.0b2;" nokeepalive downgrade-1.0 force-response-1.0
 BrowserMatch "RealPlayer 4\.0" force-response-1.0
 BrowserMatch "Java/1\.0" force-response-1.0
 BrowserMatch "JDK/1\.0" force-response-1.0
-
-
 BrowserMatch "Microsoft Data Access Internet Publishing Provider" redirect-carefully
 BrowserMatch "MS FrontPage" redirect-carefully
 BrowserMatch "^WebDrive" redirect-carefully
@@ -366,12 +353,38 @@ BrowserMatch "^Dreamweaver-WebDAV-SCM1" redirect-carefully
 
 #</IfModule>
 
+SetOutputFilter DEFLATE
+DeflateCompressionLevel 3
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4\.0[678] no-gzip
+BrowserMatch \bMSIE\s(7|8) !no-gzip !gzip-only-text/html
+SetEnvIfNoCase Request_URI\.(?:gif|jpe?g|png|ico|zip|gz|exe)$ no-gzip dont-vary
+FilterDeclare Compression CONTENT_SET
+FilterProvider Compression DEFLATE resp=Content-Type $text/html
+FilterProvider Compression DEFLATE resp=Content-Type $text/xml
+FilterProvider Compression DEFLATE resp=Content-Type $text/css
+FilterProvider Compression DEFLATE resp=Content-Type $text/plain
+FilterProvider Compression DEFLATE resp=Content-Type $text/javascript
+FilterProvider Compression DEFLATE resp=Content-Type $image/svg+xml
+FilterProvider Compression DEFLATE resp=Content-Type $application/xhtml+xml
+FilterProvider Compression DEFLATE resp=Content-Type $application/xml
+FilterProvider Compression DEFLATE resp=Content-Type $application/rdf+xml
+FilterProvider Compression DEFLATE resp=Content-Type $application/rss+xml
+FilterProvider Compression DEFLATE resp=Content-Type $application/atom+xml
+FilterProvider Compression DEFLATE resp=Content-Type $text/javascript
+FilterProvider Compression DEFLATE resp=Content-Type $application/javascript
+FilterProvider Compression DEFLATE resp=Content-Type $application/x-javascript
+FilterProvider Compression DEFLATE resp=Content-Type $application/x-font-ttf
+FilterProvider Compression DEFLATE resp=Content-Type $application/x-font-otf
+FilterProvider Compression DEFLATE resp=Content-Type $font/truetype
+FilterProvider Compression DEFLATE resp=Content-Type $font/opentype
+FilterChain Compression
+Header append Vary Accept-Encoding env=!dont-vary
 
 ### Section 3: Virtual Hosts
 
 Listen 80
 NameVirtualHost *:80
-
 <VirtualHost *:80>
     ServerName <%= @apache_service_ipaddress %>
     ServerAdmin root@localhost

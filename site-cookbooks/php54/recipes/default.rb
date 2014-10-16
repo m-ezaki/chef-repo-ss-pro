@@ -20,9 +20,3 @@ php54-mcrypt php54-pecl-memcached}.each do |pkg|
   action :install
  end
 end
-
-%w{php54-fpm}.each do |pkg|
- package pkg do
-  action :install
- end
-end
