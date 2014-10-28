@@ -1,0 +1,8 @@
+{
+  "run_list": [
+   "role[CyberSS_Caching_STG_AP_01]"
+  ],
+  "automatic": {
+    "ipaddress": "172.24.25.72"
+  }
+}
